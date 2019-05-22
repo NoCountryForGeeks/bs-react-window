@@ -1,0 +1,14 @@
+{
+  "name": "bs-react-window",
+  "reason": {
+    "react-jsx": 2
+  },
+  "sources": {
+    "dir": "src",
+    "subdirs": true
+  },
+  "suffix": ".bs.js",
+  "namespace": true,
+  "bs-dependencies": ["reason-react"],
+  "refmt": 3
+}
