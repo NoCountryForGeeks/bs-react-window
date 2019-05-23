@@ -70,3 +70,5 @@ lib/
 package-links.json
 
 test/*/js
+
+**/*.bs.js
