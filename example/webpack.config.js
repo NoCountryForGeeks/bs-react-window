@@ -2,7 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  entry: './src/Index.bs.js',
+  entry: './src/index.bs.js',
   mode: process.env.NODE_ENV,
   output: {
     path: path.join(__dirname, 'build/'),
