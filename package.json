@@ -1,24 +1,28 @@
 {
-  "name": "bs-react-window",
+  "name": "reason-window",
   "version": "0.0.1",
+  "description": "Bucklescript bindings for react-window",
   "scripts": {
     "build": "bsb -make-world",
     "start": "bsb -make-world -w",
-    "clean": "bsb -clean-world",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "clean": "bsb -clean-world"
   },
   "keywords": [
-    "BuckleScript"
+    "BuckleScript",
+    "ReasonReact",
+    "ReactWindow",
+    "ReasonWindow"
   ],
-  "author": "",
-  "license": "MIT",
-  "dependencies": {
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0",
-    "react-window": "^1.8.1",
-    "reason-react": ">=0.4.0"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/NoCountryForGeeks/reason-window"
   },
+  "license": "MIT",
   "devDependencies": {
-    "bs-platform": "^4.0.18"
+    "bs-platform": "^5.0.3"
+  },
+  "dependencies": {
+    "react-window": "^1.8.1",
+    "reason-react": "^0.7.0"
   }
 }

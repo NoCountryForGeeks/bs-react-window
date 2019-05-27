@@ -1,14 +1,23 @@
 {
-  "name": "bs-react-window",
+  "name": "reason-window",
+  "version": "0.0.1",
   "reason": {
-    "react-jsx": 2
+    "react-jsx": 3
   },
   "sources": {
     "dir": "src",
     "subdirs": true
   },
-  "suffix": ".bs.js",
-  "namespace": true,
+  "package-specs": [
+    {
+      "module": "commonjs",
+      "in-source": true
+    }
+  ],
   "bs-dependencies": ["reason-react"],
+  "warnings": {
+    "error": "+101"
+  },
+  "namespace": true,
   "refmt": 3
 }

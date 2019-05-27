@@ -1,4 +1,4 @@
 ReactDOMRe.renderToElementWithId(
-  <App message="bs-react-window-example" />,
+  <h1>(ReasonReact.string("reason-window example"))</h1>,
   "app",
 );
