@@ -1,31 +1,73 @@
-type rowProps = {
+type cellProps = {
   index: int,
-  style: ReactDOMRe.style
+  style: ReactDOMRe.style,
+  /*isScrolling: undefined, true or false It depends on prop useIsScrolling of list*/
+  /*data: any, it depends on itemData prop of list*/
 }
 
-type internalRowProps = Js.t({
+type internalCellProps = Js.t({
   .
     index: int,
     style: ReactDOMRe.style
 });
 
-let createChildrenProps = (internalRowProps: internalRowProps) => {
-  let rowProps: rowProps = {
-    index: internalRowProps##index,
-    style: internalRowProps##style
+type direction = 
+  | Ltr
+  | Rtl;
+
+let parseDirection = direction => switch (direction) {
+  | Ltr => "ltr"
+  | Rtl => "rtl"
+  };
+
+type layout = 
+  | Horizontal
+  | Vertical;
+
+let parseLayout = layout => switch (layout) {
+  | Vertical => "vertical"
+  | Horizontal => "horizontal"
+  };
+
+type onItemsRendered = {
+  overscanStartIndex: int,
+  overscanStopIndex: int,
+  visibleStartIndex: int,
+  visibleStopIndex: int
+}
+
+let parseChildrenProps = (internalCellProps: internalCellProps) => {
+  let cellProps: cellProps = {
+    index: internalCellProps##index,
+    style: internalCellProps##style
   }
-  rowProps;
+  cellProps;
 }
 
 module InternalFixedSizeGrid = {
   [@bs.module "react-window"] [@react.component]
   external make:
     (
-      ~height: int,
+      ~className: string=?,
+      ~direction: string,
+      ~height: int, /* int or string*/
+      ~initialScrollOffset: int=?,
+      /*~innerRef: function | createRef object*/
+      /*~innerElementType: React$ElementType = "div"*/
       ~itemCount: int,
+      /*~itemData: any*/
+      /*~itemKey: function*/
       ~itemSize: int,
+      ~layout: string,
+      ~onItemsRendered: (onItemsRendered => unit)=?,
+      /*~onScroll: function*/
+      /*~outerRef: function | createRef object*/
+      /*~outerElementType: React$ElementType = "div"*/
+      ~overscanCount: int=?,
+      ~style: ReactDOMRe.style=?,
+      ~useIsScrolling: bool=?,
       ~width: int,
-      ~children: internalRowProps => React.element
+      ~children: internalCellProps => React.element
     ) =>
     React.element = "FixedSizeList";
 };
@@ -33,17 +75,52 @@ module InternalFixedSizeGrid = {
 [@react.component]
 let make =
     (
-      ~height: int,
+      ~className: string=?,
+      ~direction: direction,
+      ~height: int, /* int or string*/
+      ~initialScrollOffset: int=?,
+      /*~innerRef: function | createRef object*/
+      /*~innerElementType: React$ElementType = "div"*/
       ~itemCount: int,
+      /*~itemData: any*/
+      /*~itemKey: function*/
       ~itemSize: int,
+      ~layout: layout,
+      ~onItemsRendered: (onItemsRendered => unit)=?,
+      /*~onScroll: function*/
+      /*~outerRef: function | createRef object*/
+      /*~outerElementType: React$ElementType = "div"*/
+      ~overscanCount: int=?,
+      ~style: ReactDOMRe.style=?,
+      ~useIsScrolling: bool=?,
       ~width: int,
-      ~children: rowProps => React.element
+      ~children: cellProps => React.element
     ) => 
+
+    /*Methods*/
+    /*scrollTo(scrollOffset: number): void*/
+    /*scrollToItem(index: number, align: string = "auto"): void*/
+
   <InternalFixedSizeGrid
+    className
+    direction={parseDirection(direction)}
     height
+    initialScrollOffset
+    /*innerRef*/
+    /*innerElementType*/
     itemCount
+    /*itemData*/
+    /*itemKey*/
     itemSize
+    layout={parseLayout(layout)}
+    onItemsRendered
+    /*onScroll*/
+    /*outerRef*/
+    /*outerElementType*/
+    overscanCount
+    style
+    useIsScrolling
     width
   >
-    {internalRowProps => children(createChildrenProps(internalRowProps))}
+    {internalCellProps => children(parseChildrenProps(internalCellProps))}
   </InternalFixedSizeGrid>;
