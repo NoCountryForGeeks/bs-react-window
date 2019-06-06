@@ -7,8 +7,8 @@ type cellProps = {
 
 type internalCellProps = Js.t({
   .
-    index: int,
-    style: ReactDOMRe.style
+  index: int,
+  style: ReactDOMRe.style
 });
 
 type direction = 
@@ -29,11 +29,60 @@ let parseLayout = layout => switch (layout) {
   | Horizontal => "horizontal"
   };
 
+type internalOnItemsRendered = Js.t({
+  .
+  overscanStartIndex: int,
+  overscanStopIndex: int,
+  visibleStartIndex: int,
+  visibleStopIndex: int
+})
+
 type onItemsRendered = {
   overscanStartIndex: int,
   overscanStopIndex: int,
   visibleStartIndex: int,
   visibleStopIndex: int
+}
+
+let parseOnItemsRendered = (internalOnItemsRendered: internalOnItemsRendered) => {
+  let onItemsRendered = {
+    overscanStartIndex: internalOnItemsRendered##overscanStartIndex,
+    overscanStopIndex: internalOnItemsRendered##overscanStopIndex,
+    visibleStartIndex: internalOnItemsRendered##visibleStartIndex,
+    visibleStopIndex: internalOnItemsRendered##visibleStopIndex
+  }
+  onItemsRendered;
+}
+
+type scrollDirection = 
+  | Backward
+  | Forward
+
+type internalOnScroll = Js.t({
+  .
+  scrollDirection: string,
+  scrollOffset: int,
+  scrollUpdateWasRequested: bool
+})
+
+type onScroll = {
+  scrollDirection: scrollDirection,
+  scrollOffset: int,
+  scrollUpdateWasRequested: bool
+}
+
+let parseOnScroll = (internalOnScroll: internalOnScroll) => {
+  let scrollDirection = switch (internalOnScroll##scrollDirection) {
+    | "backward" => Backward
+    | "forward" => Forward
+  };
+
+  let onScroll: onScroll = {
+    scrollDirection: scrollDirection,
+    scrollOffset: internalOnScroll##scrollOffset,
+    scrollUpdateWasRequested: internalOnScroll##scrollUpdateWasRequested
+  }
+  onScroll;
 }
 
 let parseChildrenProps = (internalCellProps: internalCellProps) => {
@@ -59,14 +108,14 @@ module InternalFixedSizeGrid = {
       /*~itemKey: function*/
       ~itemSize: int,
       ~layout: string,
-      ~onItemsRendered: (onItemsRendered => unit)=?,
-      /*~onScroll: function*/
+      ~onItemsRendered: (internalOnItemsRendered => unit)=?,
+      ~onScroll: (internalOnScroll => unit)=?,
       /*~outerRef: function | createRef object*/
       /*~outerElementType: React$ElementType = "div"*/
       ~overscanCount: int=?,
       ~style: ReactDOMRe.style=?,
       ~useIsScrolling: bool=?,
-      ~width: int,
+      ~width: int, /* int or string*/
       ~children: internalCellProps => React.element
     ) =>
     React.element = "FixedSizeList";
@@ -87,13 +136,13 @@ let make =
       ~itemSize: int,
       ~layout: layout,
       ~onItemsRendered: (onItemsRendered => unit)=?,
-      /*~onScroll: function*/
+      ~onScroll: (onScroll => unit)=?,
       /*~outerRef: function | createRef object*/
       /*~outerElementType: React$ElementType = "div"*/
       ~overscanCount: int=?,
       ~style: ReactDOMRe.style=?,
       ~useIsScrolling: bool=?,
-      ~width: int,
+      ~width: int, /* int or string*/
       ~children: cellProps => React.element
     ) => 
 
@@ -113,8 +162,8 @@ let make =
     /*itemKey*/
     itemSize
     layout={parseLayout(layout)}
-    onItemsRendered
-    /*onScroll*/
+    onItemsRendered={internalOnItemsRendered => onItemsRendered(parseOnItemsRendered(internalOnItemsRendered))}
+    onScroll={internalOnScroll => onScroll(parseOnScroll(internalOnScroll))}
     /*outerRef*/
     /*outerElementType*/
     overscanCount
