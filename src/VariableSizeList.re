@@ -1,9 +1,10 @@
-module InternalFixedSizeGrid = {
+module InternalVariableSizeList = {
   [@bs.module "react-window"] [@react.component]
   external make:
     (
       ~className: string=?,
       ~direction: string,
+      ~estimatedItemSize: int=?,
       ~height: int, /* int or string*/
       ~initialScrollOffset: int=?,
       /*~innerRef: function | createRef object*/
@@ -11,7 +12,7 @@ module InternalFixedSizeGrid = {
       ~itemCount: int,
       /*~itemData: any*/
       /*~itemKey: function*/
-      ~itemSize: int,
+      ~itemSize: int => int,
       ~layout: string,
       ~onItemsRendered: (SharedList.internalOnItemsRendered => unit)=?,
       ~onScroll: (SharedList.internalOnScroll => unit)=?,
@@ -23,7 +24,7 @@ module InternalFixedSizeGrid = {
       ~width: int, /* int or string*/
       ~children: SharedList.internalCellProps => React.element
     ) =>
-    React.element = "FixedSizeList";
+    React.element = "VariableSizeList";
 };
 
 [@react.component]
@@ -31,6 +32,7 @@ let make =
     (
       ~className: string=?,
       ~direction: SharedList.direction,
+      ~estimatedItemSize: int=?,
       ~height: int, /* int or string*/
       ~initialScrollOffset: int=?,
       /*~innerRef: function | createRef object*/
@@ -38,7 +40,7 @@ let make =
       ~itemCount: int,
       /*~itemData: any*/
       /*~itemKey: function*/
-      ~itemSize: int,
+      ~itemSize:  int => int,
       ~layout: SharedList.layout,
       ~onItemsRendered: (SharedList.onItemsRendered => unit)=?,
       ~onScroll: (SharedList.onScroll => unit)=?,
@@ -54,10 +56,12 @@ let make =
     /*Methods*/
     /*scrollTo(scrollOffset: number): void*/
     /*scrollToItem(index: number, align: string = "auto"): void*/
+    /*resetAfterIndex(index: number, shouldForceUpdate: boolean = true): void*/
 
-  <InternalFixedSizeGrid
+  <InternalVariableSizeList
     className
     direction={SharedList.parseDirection(direction)}
+    estimatedItemSize
     height
     initialScrollOffset
     /*innerRef*/
@@ -77,4 +81,4 @@ let make =
     width
   >
     {internalCellProps => children(SharedList.parseChildrenProps(internalCellProps))}
-  </InternalFixedSizeGrid>;
+  </InternalVariableSizeList>;
