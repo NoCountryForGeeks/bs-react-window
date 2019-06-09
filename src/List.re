@@ -1,3 +1,5 @@
+include Shared;
+
 type cellProps = {
   index: int,
   style: ReactDOMRe.style,
@@ -10,15 +12,6 @@ type internalCellProps = Js.t({
   index: int,
   style: ReactDOMRe.style
 });
-
-type direction = 
-  | Ltr
-  | Rtl;
-
-let parseDirection = direction => switch (direction) {
-  | Ltr => "ltr"
-  | Rtl => "rtl"
-  };
 
 type layout = 
   | Horizontal
@@ -54,10 +47,6 @@ let parseOnItemsRendered = (internalOnItemsRendered: internalOnItemsRendered) =>
   onItemsRendered;
 }
 
-type scrollDirection = 
-  | Backward
-  | Forward
-
 type internalOnScroll = Js.t({
   .
   scrollDirection: string,
@@ -72,10 +61,7 @@ type onScroll = {
 }
 
 let parseOnScroll = (internalOnScroll: internalOnScroll) => {
-  let scrollDirection = switch (internalOnScroll##scrollDirection) {
-    | "backward" => Backward
-    | "forward" => Forward
-  };
+  let scrollDirection = parseScrollDirection(internalOnScroll##scrollDirection);
 
   let onScroll: onScroll = {
     scrollDirection: scrollDirection,

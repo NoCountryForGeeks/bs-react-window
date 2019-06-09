@@ -5,11 +5,11 @@ let make = () => {
     <div>
         <FixedSizeList
             className={"fixed"}
-            direction={SharedList.Ltr}
+            direction={List.Ltr}
             height={200}
             itemCount={1000}
             itemSize={50}
-            layout={SharedList.Vertical}
+            layout={List.Vertical}
             onItemsRendered={Js.log}
             onScroll={Js.log}
             useIsScrolling={true}
@@ -21,12 +21,12 @@ let make = () => {
         </FixedSizeList>
         <VariableSizeList
             className={"variable"}
-            direction={SharedList.Ltr}
+            direction={List.Ltr}
             estimatedItemSize={100}
             height={200}
             itemCount={100}
             itemSize={index => index + 50}
-            layout={SharedList.Vertical}
+            layout={List.Vertical}
             onItemsRendered={Js.log}
             onScroll={Js.log}
             useIsScrolling={true}
@@ -36,6 +36,24 @@ let make = () => {
         >
             {cellProps => <Cell cellProps/>}
         </VariableSizeList>
+        <FixedSizeGrid
+            className={"fixedGrid"}
+            columnCount={1000}
+            columnWidth={100}
+            direction={Grid.Ltr}
+            height={300}
+            onItemsRendered={Js.log}
+            onScroll={Js.log}
+            overscanColumnCount={5}
+            overscanRowCount={5}
+            rowCount={1000}
+            rowHeight={50}
+            style={ReactDOMRe.Style.make(~background="blue", ())}
+            useIsScrolling={true}
+            width={300}
+        >
+            {gridCellProps => <GridCell gridCellProps />}
+        </FixedSizeGrid>
     </div>
     
 };
