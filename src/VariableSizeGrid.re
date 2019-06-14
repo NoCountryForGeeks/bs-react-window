@@ -1,11 +1,13 @@
-module InternalFixedSizeGrid = {
+module InternalVariableSizeGrid = {
   [@bs.module "react-window"] [@react.component]
   external make:
     (
       ~className: string=?,
       ~columnCount: int,
-      ~columnWidth: int,
+      ~columnWidth: int => int,
       ~direction: string,
+      ~estimatedColumnWidth: int=?,
+      ~estimatedRowHeight: int=?,
       ~height: int, /* int or string*/
       ~initialScrollLeft: int=?,
       ~initialScrollTop: int=?,
@@ -20,13 +22,13 @@ module InternalFixedSizeGrid = {
       ~overscanColumnCount: int=?,
       ~overscanRowCount: int=?,
       ~rowCount: int,
-      ~rowHeight: int,
+      ~rowHeight: int => int,
       ~style: ReactDOMRe.style=?,
       ~useIsScrolling: bool=?,
       ~width: int, /* int or string*/
       ~children: Grid.internalCellProps => React.element
     ) =>
-    React.element = "FixedSizeGrid";
+    React.element = "VariableSizeGrid";
 };
 
 [@react.component]
@@ -34,8 +36,10 @@ let make =
     (
       ~className: string=?,
       ~columnCount: int,
-      ~columnWidth: int,
+      ~columnWidth: int => int,
       ~direction: Grid.direction,
+      ~estimatedColumnWidth: int=?,
+      ~estimatedRowHeight: int=?,
       ~height: int, /* int or string*/
       ~initialScrollLeft: int=?,
       ~initialScrollTop: int=?,
@@ -50,7 +54,7 @@ let make =
       ~overscanColumnCount: int=?,
       ~overscanRowCount: int=?,
       ~rowCount: int,
-      ~rowHeight: int,
+      ~rowHeight: int => int,
       ~style: ReactDOMRe.style=?,
       ~useIsScrolling: bool=?,
       ~width: int, /* int or string*/
@@ -60,15 +64,14 @@ let make =
     /*Methods*/
     /*scrollTo({scrollLeft: number, scrollTop: number}): void*/
     /*scrollToItem({align: string = "auto", columnIndex?: number, rowIndex?: number }): void*/
-    /*resetAfterColumnIndex(index: number, shouldForceUpdate: boolean = true): void*/
-    /*resetAfterIndices({ columnIndex: number, rowIndex: number, shouldForceUpdate: boolean = true }): void*/
-    /*resetAfterRowIndex(index: number, shouldForceUpdate: boolean = true): void*/
 
-  <InternalFixedSizeGrid
+  <InternalVariableSizeGrid
     className
     columnCount
     columnWidth
     direction={List.parseDirection(direction)}
+    estimatedColumnWidth
+    estimatedRowHeight
     height
     initialScrollLeft
     initialScrollTop
@@ -89,4 +92,4 @@ let make =
     width
   >
     {internalCellProps => children(Grid.parseChildrenProps(internalCellProps))}
-  </InternalFixedSizeGrid>;
+  </InternalVariableSizeGrid>;

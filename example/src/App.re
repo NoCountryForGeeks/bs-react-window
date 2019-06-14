@@ -54,6 +54,26 @@ let make = () => {
         >
             {gridCellProps => <GridCell gridCellProps />}
         </FixedSizeGrid>
+        <VariableSizeGrid
+            className={"variableGrid"}
+            columnCount={1000}
+            columnWidth={index => index + 50}
+            direction={Grid.Ltr}
+            estimatedColumnWidth={20}
+            estimatedRowHeight={20}
+            height={300}
+            onItemsRendered={Js.log}
+            onScroll={Js.log}
+            overscanColumnCount={5}
+            overscanRowCount={5}
+            rowCount={1000}
+            rowHeight={index => index + 50}
+            style={ReactDOMRe.Style.make(~background="yellow", ())}
+            useIsScrolling={true}
+            width={300}
+        >
+            {gridCellProps => <GridCell gridCellProps />}
+        </VariableSizeGrid>
     </div>
     
 };
